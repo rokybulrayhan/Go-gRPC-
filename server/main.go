@@ -11,7 +11,9 @@ import (
 	"google.golang.org/grpc/reflection"
 )
 
-type server struct{}
+type server struct {
+	gen.UnimplementedAddServiceServer
+}
 
 func main() {
 	listener, err := net.Listen("tcp", ":4040")
@@ -44,4 +46,10 @@ func (s *server) Multiply(ctx context.Context, request *gen.Request) (*gen.Respo
 	result := a * b
 
 	return &gen.Response{Result: result}, nil
+}
+
+func (s *server) Array(ctx context.Context, request *gen.ArrayRequest) (*gen.ArrayResponse, error) {
+	var ArrayResponse = []int64{1, 2, 3, 4}
+
+	return &gen.ArrayResponse{ListResponse: ArrayResponse}, nil
 }

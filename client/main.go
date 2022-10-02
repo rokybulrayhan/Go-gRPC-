@@ -66,6 +66,24 @@ func main() {
 		}
 	})
 
+	g.GET("/array/:list", func(ctx *gin.Context) {
+		list, err := strconv.ParseUint(ctx.Param("list"), 10, 64)
+		if err != nil {
+			ctx.JSON(http.StatusBadRequest, gin.H{"error": "Invalid Parameter A"})
+			return
+		}
+
+		req := &gen.ArrayRequest{ListRequest: int64(list)}
+
+		if ArrayResponse, err := client.Array(ctx, req); err == nil {
+			ctx.JSON(http.StatusOK, gin.H{
+				"result": fmt.Sprint(ArrayResponse.ListResponse),
+			})
+		} else {
+			ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		}
+	})
+
 	if err := g.Run(":8080"); err != nil {
 		log.Fatalf("Failed to run server: %v", err)
 	}

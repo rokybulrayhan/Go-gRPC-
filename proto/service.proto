@@ -13,7 +13,16 @@ message Response {
   int64 result = 1; 
 }
 
+message ArrayRequest {
+    int64 listRequest = 1;
+}
+
+message ArrayResponse {
+    repeated int64 listResponse = 1;
+}
+
 service AddService {
   rpc Add(Request) returns (Response);
   rpc Multiply(Request) returns (Response);
+  rpc Array(ArrayRequest) returns (ArrayResponse);
 }
